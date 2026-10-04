@@ -58,6 +58,29 @@ PR; `/` — поиск по ID, названию, автору, описанию
 Проверка пакета не запускает QML. Плагины выполняются с правами пользователя,
 поэтому код необходимо проверять до одобрения. Registry не является песочницей.
 
+## Telegram-бот модерации
+
+В репозитории есть `scripts/community-registry-telegram-bot.py`. Он отправляет
+модераторам новые и изменённые открытые PR с названием, описанием, версией,
+ID, контрибьютором, тегами, source, repository и license. Список Telegram
+username находится в [`telegram-moderators.json`](telegram-moderators.json):
+сейчас там `@futureoffc` и `@psxgld`.
+
+1. Создайте бота через `@BotFather` и получите токен.
+2. Скопируйте `telegram-bot.env.example` в защищённый файл и заполните
+   `TELEGRAM_BOT_TOKEN` и `GITHUB_TOKEN`.
+3. Запустите из корня registry:
+
+```bash
+set -a; source ./telegram-bot.env; set +a
+python3 scripts/community-registry-telegram-bot.py
+```
+
+Модератор должен один раз открыть бота и отправить `/start`; после этого чат
+получит уведомления о новых PR. Команды: `/inbox`, `/status`, `/approve N`,
+`/reject N`, `/merge N`. Бот принимает команды только от username из
+`telegram-moderators.json`; токены в Git не добавляются.
+
 ## Встроенные плагины AngelOS
 
 Registry содержит зеркала плагинов из AngelOS-Dotfiles: `cat`,
