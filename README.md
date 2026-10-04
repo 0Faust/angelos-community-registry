@@ -6,6 +6,10 @@ with `status: "approved"` are shown to users. New submissions must start as
 
 ## Submit a plugin
 
+The full developer workflow is documented in
+[`CONTRIBUTING.md`](CONTRIBUTING.md). It covers local development, manifest
+fields, ZIP validation, GitHub Releases, registry submissions, and moderation.
+
 1. Create an AngelOS plugin folder with `manifest.json` and its QML/assets.
    The manifest must contain a simple unique `id`, `name`, and `version`.
 2. Put the plugin folder in its own GitHub repository and publish a ZIP file
