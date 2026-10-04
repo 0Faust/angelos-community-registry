@@ -15,18 +15,6 @@ REPO = "futureUnd1ground/angelos-community-registry"
 MODERATORS_URL = "https://raw.githubusercontent.com/{}/main/moderators.json".format(REPO)
 
 
-def system_theme():
-    """Read the desktop color preference without adding GUI dependencies."""
-    try:
-        result = subprocess.run(["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
-                                capture_output=True, text=True, timeout=2)
-        if "dark" in result.stdout.casefold():
-            return "dark"
-    except (OSError, subprocess.SubprocessError):
-        pass
-    return "light"
-
-
 def gh(args):
     result = subprocess.run(["gh", "api"] + args, capture_output=True, text=True)
     if result.returncode:
@@ -107,23 +95,25 @@ class RegistryApp(tk.Tk):
             style.theme_use("clam")
         except tk.TclError:
             pass
-        if system_theme() == "dark":
-            palette = {"bg": "#202124", "panel": "#292a2d", "fg": "#f1f3f4", "muted": "#bdc1c6",
-                       "select": "#3c5a78", "border": "#5f6368"}
-        else:
-            palette = {"bg": "#f5f7fa", "panel": "#ffffff", "fg": "#202124", "muted": "#5f6368",
-                       "select": "#d9eaf7", "border": "#c5cbd3"}
+        # Keep every control in one dark palette. Native ttk buttons otherwise
+        # remain light on some Linux themes even when the window is dark.
+        palette = {"bg": "#17191c", "panel": "#22252a", "fg": "#f3f5f7", "muted": "#aeb6c2",
+                   "select": "#315b82", "border": "#4c5561", "accent": "#73b7ff"}
         self.configure(background=palette["bg"])
         style.configure("TFrame", background=palette["bg"])
         style.configure("TLabel", background=palette["bg"], foreground=palette["fg"])
-        style.configure("TButton", padding=(10, 6))
+        style.configure("TButton", background=palette["panel"], foreground=palette["fg"], bordercolor=palette["border"],
+                        lightcolor=palette["panel"], darkcolor=palette["panel"], padding=(10, 6))
+        style.map("TButton", background=[("active", palette["select"]), ("pressed", palette["select"])],
+                  foreground=[("disabled", palette["muted"]), ("!disabled", palette["fg"])])
+        style.configure("TEntry", fieldbackground=palette["panel"], foreground=palette["fg"], bordercolor=palette["border"])
         style.configure("Treeview", background=palette["panel"], fieldbackground=palette["panel"], foreground=palette["fg"], rowheight=30)
         style.map("Treeview", background=[("selected", palette["select"])], foreground=[("selected", palette["fg"])])
-        style.configure("Treeview.Heading", background=palette["bg"], foreground=palette["fg"])
+        style.configure("Treeview.Heading", background=palette["panel"], foreground=palette["fg"], relief="flat")
         header = ttk.Frame(self, padding=(16, 14))
         header.pack(fill="x")
         ttk.Label(header, text="COMMUNITY REGISTRY", font=("Sans", 18, "bold")).pack(side="left")
-        ttk.Label(header, text="  Только для модераторов  •  @{}".format(self.user), foreground="#ba2d2d").pack(side="left", padx=12)
+        ttk.Label(header, text="  Только для модераторов  •  @{}".format(self.user), foreground="#ff7b72").pack(side="left", padx=12)
         ttk.Button(header, text="Обновить", command=self.refresh).pack(side="right")
         search = ttk.Frame(self, padding=(16, 0, 16, 10))
         search.pack(fill="x")
@@ -160,7 +150,8 @@ class RegistryApp(tk.Tk):
         for label, action in (("Открыть PR", self.open_pr), ("Одобрить review", lambda: self.action("review")),
                               ("Отклонить", lambda: self.action("reject")), ("Merge", lambda: self.action("merge"))):
             ttk.Button(actions, text=label, command=action).pack(fill="x", pady=3)
-        ttk.Label(self, textvariable=self.status, relief="sunken", anchor="w", padding=6).pack(fill="x", side="bottom")
+        status_bar = ttk.Label(self, textvariable=self.status, relief="sunken", anchor="w", padding=6)
+        status_bar.pack(fill="x", side="bottom")
 
     def set_status(self, text):
         self.status.set(text)
