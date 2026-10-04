@@ -1,4 +1,17 @@
 {
   "version": 1,
-  "plugins": []
+  "plugins": [
+    {
+      "id": "community-store",
+      "name": "AngelOS Community Store",
+      "author": "futureUnd1ground",
+      "version": "0.2.0",
+      "description": "Browse, install, update, and remove community plugins with registry moderation.",
+      "source": "https://github.com/futureUnd1ground/angelos-community-store/releases/download/v0.2.0/community-store.zip",
+      "repository": "https://github.com/futureUnd1ground/angelos-community-store",
+      "tags": ["utility", "plugins", "store"],
+      "category": "Utilities",
+      "status": "approved"
+    }
+  ]
 }
