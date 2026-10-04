@@ -52,6 +52,20 @@ gh auth login
 python3 scripts/community-registry-moderator.py
 ```
 
+To install a direct console command in Fish, run this once from a local clone:
+
+```fish
+fish install-moderator.fish
+fish_add_path ~/.local/bin
+```
+
+After installation, run `community-registry-moderator` from any directory.
+The installer places the script in `~/.local/share`, adds the command to
+`~/.local/bin`, and configures Fish's PATH. On the maintainer's CachyOS setup,
+it also copies the previously authenticated temporary `gh` binary into
+`~/.local/bin` when no GitHub CLI is already available. If GitHub CLI is not
+authenticated in that Fish session, run `gh auth login` once.
+
 The TUI checks the authenticated GitHub username against
 [`moderators.json`](moderators.json). The default list contains only
 `futureUnd1ground`; add another username through a reviewed Pull Request to
