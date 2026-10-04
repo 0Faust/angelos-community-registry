@@ -128,7 +128,9 @@ fish install-registry-gui.fish
 It appears in the application menu as `AngelOS Community Registry` and can also
 be launched with `community-registry-gui`. The app uses the current `gh` login,
 shows open PRs with search and plugin metadata, and provides confirmed
-`Approve review`, `Reject`, `Merge`, `Open PR`, and `Refresh` actions.
+`Approve review`, `Reject`, `Merge`, `Open PR`, and `Refresh` actions. All
+controls use one dark palette so native light ttk buttons do not clash with the
+dark window background.
 
 Review the plugin source, manifest, archive contents, release provenance,
 license, dependencies, requested permissions, and AngelOS compatibility in
