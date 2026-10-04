@@ -83,6 +83,20 @@ python3 scripts/community-registry-telegram-bot.py
 повторно проверяет username и для кнопок, и для команд; токены в Git не
 добавляются.
 
+## Отдельное GUI-приложение
+
+Для локальной модерации без TUI установите приложение из клона registry:
+
+```fish
+fish install-registry-gui.fish
+```
+
+После установки оно появляется в меню приложений как `AngelOS Community
+Registry`, а также запускается командой `community-registry-gui`. Приложение
+использует текущую авторизацию `gh`, показывает открытые PR, поиск, описание,
+автора, версию, теги, source и license. Действия `Одобрить review`, `Отклонить`
+и `Merge` требуют подтверждения.
+
 ## Встроенные плагины AngelOS
 
 Registry содержит зеркала плагинов из AngelOS-Dotfiles: `cat`,
