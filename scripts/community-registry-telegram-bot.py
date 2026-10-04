@@ -112,10 +112,27 @@ def send(chat_id, text):
     telegram("sendMessage", {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True})
 
 
+def pr_keyboard(pr):
+    number = str(pr.get("number"))
+    return {"inline_keyboard": [
+        [{"text": "Открыть PR", "url": pr.get("html_url", "https://github.com/{}/pulls/{}".format(REPO, number))}],
+        [{"text": "Одобрить review", "callback_data": "pr:approve:" + number},
+         {"text": "Отклонить", "callback_data": "pr:reject:" + number}],
+        [{"text": "Merge", "callback_data": "pr:merge:" + number},
+         {"text": "Обновить", "callback_data": "pr:refresh:" + number}],
+    ]}
+
+
+def send_pr(chat_id, pr):
+    telegram("sendMessage", {"chat_id": chat_id, "text": format_pr(pr), "parse_mode": "HTML",
+                              "disable_web_page_preview": True, "reply_markup": pr_keyboard(pr)})
+
+
 def help_text():
     return ("Команды: /inbox — открытые заявки; /status — состояние бота; "
             "/approve N — одобрить review PR; /reject N — закрыть PR; "
-            "/merge N — слить PR после review. Модерация доступна только allowlist.")
+            "/merge N — слить PR после review. Можно пользоваться кнопками под заявкой. "
+            "Модерация доступна только allowlist.")
 
 
 def moderate(message, command, number):
@@ -149,8 +166,6 @@ def handle_update(update, state):
     chat_id = message.get("chat", {}).get("id")
     if not chat_id or not text:
         return
-    if chat_id not in state["chats"]:
-        state["chats"].append(chat_id)
     parts = text.split()
     command = parts[0].split("@", 1)[0].casefold()
     if not is_moderator(message):
@@ -165,13 +180,62 @@ def handle_update(update, state):
         prs = pr_items()
         send(chat_id, "Открытых PR: {}".format(len(prs)))
         for pr in prs:
-            send(chat_id, format_pr(pr))
+            send_pr(chat_id, pr)
     elif command == "/status":
         send(chat_id, "Бот работает. Открытых PR: {}".format(len(pr_items())))
     elif command in ("/approve", "/reject", "/merge") and len(parts) == 2 and parts[1].isdigit():
         moderate(message, command[1:], parts[1])
     else:
         send(chat_id, help_text())
+
+
+def handle_callback(update, state):
+    callback = update.get("callback_query") or {}
+    data = str(callback.get("data", ""))
+    message = callback.get("message") or {}
+    actor = {"from": callback.get("from") or {}, "chat": message.get("chat") or {}}
+    callback_id = callback.get("id")
+    if callback_id:
+        telegram("answerCallbackQuery", {"callback_query_id": callback_id})
+    if data.startswith("pr:"):
+        parts = data.split(":", 2)
+        if len(parts) != 3 or not parts[2].isdigit():
+            return
+        action, number = parts[1], parts[2]
+    elif data.startswith("confirm:"):
+        parts = data.split(":", 2)
+        if len(parts) != 3 or not parts[2].isdigit():
+            return
+        action, number = "confirm:" + parts[1], parts[2]
+    elif data.startswith("cancel:") and data.split(":", 1)[1].isdigit():
+        action, number = "cancel", data.split(":", 1)[1]
+    else:
+        return
+    if not is_moderator(actor):
+        if actor["chat"].get("id"):
+            send(actor["chat"]["id"], "Доступ запрещён: ваш Telegram username не в списке модераторов.")
+        return
+    if action == "refresh":
+        for pr in pr_items():
+            if str(pr.get("number")) == number:
+                send_pr(actor["chat"].get("id"), pr)
+                return
+        send(actor["chat"].get("id"), "PR #{} больше не открыт.".format(number))
+        return
+    if action in ("reject", "merge"):
+        prompt = "PR #{}: подтвердить действие {}?".format(number, action)
+        markup = {"inline_keyboard": [[
+            {"text": "Подтвердить", "callback_data": "confirm:{}:{}".format(action, number)},
+            {"text": "Отмена", "callback_data": "cancel:{}".format(number)},
+        ]]}
+        telegram("sendMessage", {"chat_id": actor["chat"].get("id"), "text": prompt, "reply_markup": markup})
+    elif action == "approve":
+        moderate(actor, action, number)
+    elif action.startswith("confirm:"):
+        confirmed_action = action.split(":", 1)[1]
+        moderate(actor, confirmed_action, number)
+    elif action == "cancel":
+        send(actor["chat"].get("id"), "Действие отменено.")
 
 
 def notify_new_prs(state):
@@ -183,7 +247,7 @@ def notify_new_prs(state):
             continue
         state["seen"][number] = signature
         for chat_id in state["chats"]:
-            send(chat_id, format_pr(pr))
+            send_pr(chat_id, pr)
     state["seen"] = {number: value for number, value in state["seen"].items() if number in active}
 
 
@@ -198,7 +262,10 @@ def main():
             response = telegram("getUpdates", {"offset": state["offset"] + 1, "timeout": POLL_SECONDS})
             for update in response.get("result", []):
                 state["offset"] = update["update_id"]
-                handle_update(update, state)
+                if update.get("callback_query"):
+                    handle_callback(update, state)
+                else:
+                    handle_update(update, state)
             save_state(state)
         except (urllib.error.URLError, TimeoutError) as exc:
             print("network error: {}".format(exc), flush=True)
