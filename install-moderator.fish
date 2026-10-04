@@ -6,10 +6,34 @@ set -l app_dir $HOME/.local/share/angelos-community-registry-moderator
 set -l bin_dir $HOME/.local/bin
 set -l moderator_source $source_dir/scripts/community-registry-moderator.py
 set -l gh_source /tmp/gh-cli-2.102.0/gh_2.102.0_linux_amd64/bin/gh
+set -l downloaded_source ""
+
+printf '\n%s\n' \
+    '████████████████████████████████████████████████████████████████████████' \
+    '██                                                                  ██' \
+    '██                 ТОЛЬКО ДЛЯ МОДЕРАТОРОВ                          ██' \
+    '██                                                                  ██' \
+    '████████████████████████████████████████████████████████████████████████' \
+    ''
 
 if not test -f $moderator_source
-    echo "Moderator script not found: $moderator_source" >&2
-    exit 1
+    set moderator_source https://raw.githubusercontent.com/futureUnd1ground/angelos-community-registry/main/scripts/community-registry-moderator.py
+    if not command -q curl
+        echo "curl is required to download the moderator." >&2
+        exit 1
+    end
+    set downloaded_source (mktemp)
+    or begin
+        echo "Could not create a temporary download file." >&2
+        exit 1
+    end
+    curl -fsSL $moderator_source -o $downloaded_source
+    or begin
+        rm -f -- $downloaded_source
+        echo "Could not download the moderator from GitHub." >&2
+        exit 1
+    end
+    set moderator_source $downloaded_source
 end
 
 mkdir -p $app_dir $bin_dir
@@ -20,9 +44,11 @@ end
 
 cp $moderator_source $app_dir/community-registry-moderator.py
 or begin
+    test -n "$downloaded_source"; and rm -f -- $downloaded_source
     echo "Could not install the moderator script." >&2
     exit 1
 end
+test -n "$downloaded_source"; and rm -f -- $downloaded_source
 
 if not command -q gh; and test -x $gh_source; and not test -e $bin_dir/gh
     cp $gh_source $bin_dir/gh
@@ -44,13 +70,10 @@ if command -q fish_add_path
     fish_add_path $bin_dir
 end
 
-if not command -q gh
-    echo "GitHub CLI was not found. Install gh and run: gh auth login" >&2
-    exit 1
-end
-
 echo "Installed command: community-registry-moderator"
-if gh auth status >/dev/null 2>&1
+if not command -q gh
+    echo "GitHub CLI is missing. Install it, then run: gh auth login" >&2
+else if gh auth status >/dev/null 2>&1
     echo "GitHub CLI is authenticated."
 else
     echo "Before moderating, authenticate this Fish environment with: gh auth login" >&2

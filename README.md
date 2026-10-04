@@ -1,5 +1,7 @@
 # AngelOS Community Registry
 
+[English](README.md) | [Русский](README.ru.md)
+
 The Community Store reads `plugins.json` from this repository. Only entries
 with `status: "approved"` are shown to users. New submissions must start as
 `pending` and are reviewed by the repository maintainer before approval.
@@ -52,10 +54,12 @@ gh auth login
 python3 scripts/community-registry-moderator.py
 ```
 
-To install a direct console command in Fish, run this once from a local clone:
+To install a direct console command in Fish, run the installer from a local
+clone, or download the installer and run it from any directory:
 
 ```fish
-fish install-moderator.fish
+curl -fsSL -o /tmp/install-moderator.fish https://raw.githubusercontent.com/futureUnd1ground/angelos-community-registry/main/install-moderator.fish
+and fish /tmp/install-moderator.fish
 fish_add_path ~/.local/bin
 ```
 
