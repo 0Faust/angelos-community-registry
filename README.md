@@ -47,6 +47,20 @@ after the review is complete, changing `status` from `pending` to `approved`.
 The Store ignores pending entries. To remove or suspend a listing, remove it
 or change its status back to `pending`, then commit the registry update.
 
+## Bundled AngelOS plugins
+
+This registry also publishes ZIP snapshots of the plugins bundled in the
+AngelOS-Dotfiles checkout. They are listed with their upstream repository and
+source path for attribution. These packages are mirrors, not independent
+rewrites; review the upstream source and its current license terms before
+redistributing them.
+
+The mirrored set currently includes `cat`, `claude-companion`,
+`codex-companion`, `nightlight`, `osu-mini`, `quick-actions`, `speedtest`,
+`stream-stats`, and `web-search`. `claude-companion` and `codex-companion`
+need their respective CLI/authentication to provide their full features;
+`speedtest` needs `speedtest-cli` for measurements.
+
 Registry entries are not a security sandbox: installed QML and scripts run
 with the user's account permissions. Do not approve code you have not
 reviewed.
