@@ -140,6 +140,21 @@
       "tags": ["launcher", "search", "web", "utility"],
       "category": "Launcher",
       "status": "approved"
+    },
+    {
+      "id": "dog-walk",
+      "name": "Dog Walk",
+      "author": "futureUnd1ground",
+      "version": "1.0.0",
+      "description": "Track a dog walk with an elapsed timer and estimated distance.",
+      "source": "https://github.com/futureUnd1ground/dog-walk/releases/download/v1.0.0/dog-walk-v1.0.0.zip",
+      "repository": "https://github.com/futureUnd1ground/dog-walk",
+      "tags": ["utility", "desktop", "pets"],
+      "category": "Utilities",
+      "license": "MIT",
+      "dependencies": [],
+      "permissions": ["local plugin settings"],
+      "status": "pending"
     }
   ]
 }
