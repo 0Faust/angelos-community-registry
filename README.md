@@ -93,6 +93,29 @@ Package validation does not execute QML. Test plugin behavior in a separate
 AngelOS test session before approval; running unreviewed plugin code inside the
 moderator could execute with the moderator's account permissions.
 
+## Telegram moderation bot
+
+`scripts/community-registry-telegram-bot.py` sends moderators every new or
+updated open PR with its title, description, version, ID, contributor, tags,
+source, repository, and license. Telegram usernames are stored in
+[`telegram-moderators.json`](telegram-moderators.json), currently
+`@futureoffc` and `@psxgld`.
+
+1. Create a bot with `@BotFather` and copy its token.
+2. Copy `telegram-bot.env.example` to a protected file and set
+   `TELEGRAM_BOT_TOKEN` and `GITHUB_TOKEN`.
+3. Start from the registry root:
+
+```bash
+set -a; source ./telegram-bot.env; set +a
+python3 scripts/community-registry-telegram-bot.py
+```
+
+A moderator must open the bot and send `/start` once to subscribe the chat.
+Commands are `/inbox`, `/status`, `/approve N`, `/reject N`, and `/merge N`.
+Commands are accepted only from usernames in `telegram-moderators.json`; tokens
+are never stored in Git.
+
 Review the plugin source, manifest, archive contents, release provenance,
 license, dependencies, requested permissions, and AngelOS compatibility in
 the pull request. Test the ZIP with Community Store when possible. Merge only
