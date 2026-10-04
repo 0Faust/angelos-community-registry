@@ -9,7 +9,11 @@
       "description": "Terminal UI for browsing, installing, updating, and removing AngelOS plugins.",
       "source": "https://github.com/futureUnd1ground/angelos-community-store/releases/download/v0.5.0/community-store-v0.5.0.zip",
       "repository": "https://github.com/futureUnd1ground/angelos-community-store",
-      "tags": ["utility", "plugins", "store"],
+      "tags": [
+        "utility",
+        "plugins",
+        "store"
+      ],
       "category": "Utilities",
       "status": "approved"
     },
@@ -23,7 +27,11 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/cat",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["widget", "desktop", "pet"],
+      "tags": [
+        "widget",
+        "desktop",
+        "pet"
+      ],
       "category": "Widgets",
       "status": "approved"
     },
@@ -37,9 +45,16 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/claude-companion",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["desktop", "launcher", "claude", "developer"],
+      "tags": [
+        "desktop",
+        "launcher",
+        "claude",
+        "developer"
+      ],
       "category": "Utilities",
-      "dependencies": ["Claude Code CLI for CLI/session features"],
+      "dependencies": [
+        "Claude Code CLI for CLI/session features"
+      ],
       "status": "approved"
     },
     {
@@ -52,7 +67,12 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/codex-companion",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["desktop", "launcher", "codex", "developer"],
+      "tags": [
+        "desktop",
+        "launcher",
+        "codex",
+        "developer"
+      ],
       "category": "Utilities",
       "status": "approved"
     },
@@ -66,7 +86,11 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/nightlight",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["desktop", "display", "nightlight"],
+      "tags": [
+        "desktop",
+        "display",
+        "nightlight"
+      ],
       "category": "Desktop",
       "status": "approved"
     },
@@ -80,7 +104,11 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/osu-mini",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["desktop", "game", "osu"],
+      "tags": [
+        "desktop",
+        "game",
+        "osu"
+      ],
       "category": "Utilities",
       "status": "approved"
     },
@@ -94,7 +122,11 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/quick-actions",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["desktop", "context-menu", "utility"],
+      "tags": [
+        "desktop",
+        "context-menu",
+        "utility"
+      ],
       "category": "Utilities",
       "status": "approved"
     },
@@ -108,9 +140,16 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/speedtest",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["bar", "network", "speedtest", "utility"],
+      "tags": [
+        "bar",
+        "network",
+        "speedtest",
+        "utility"
+      ],
       "category": "Utilities",
-      "dependencies": ["speedtest-cli for speed measurement"],
+      "dependencies": [
+        "speedtest-cli for speed measurement"
+      ],
       "status": "approved"
     },
     {
@@ -123,7 +162,12 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/stream-stats",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["widget", "desktop", "bar", "system-monitor"],
+      "tags": [
+        "widget",
+        "desktop",
+        "bar",
+        "system-monitor"
+      ],
       "category": "Widgets",
       "status": "approved"
     },
@@ -137,7 +181,12 @@
       "repository": "https://github.com/MixaDoDs/AngelOS-Dotfiles",
       "sourcePath": ".config/quickshell/angelos/plugins/web-search",
       "license": "See upstream repository; no explicit license identified",
-      "tags": ["launcher", "search", "web", "utility"],
+      "tags": [
+        "launcher",
+        "search",
+        "web",
+        "utility"
+      ],
       "category": "Launcher",
       "status": "approved"
     },
@@ -149,12 +198,18 @@
       "description": "Track a dog walk with an elapsed timer and estimated distance.",
       "source": "https://github.com/futureUnd1ground/dog-walk/releases/download/v1.0.0/dog-walk-v1.0.0.zip",
       "repository": "https://github.com/futureUnd1ground/dog-walk",
-      "tags": ["utility", "desktop", "pets"],
+      "tags": [
+        "utility",
+        "desktop",
+        "pets"
+      ],
       "category": "Utilities",
       "license": "MIT",
       "dependencies": [],
-      "permissions": ["local plugin settings"],
-      "status": "pending"
+      "permissions": [
+        "local plugin settings"
+      ],
+      "status": "approved"
     }
   ]
 }
