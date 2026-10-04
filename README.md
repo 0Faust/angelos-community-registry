@@ -112,9 +112,10 @@ python3 scripts/community-registry-telegram-bot.py
 ```
 
 A moderator must open the bot and send `/start` once to subscribe the chat.
-Commands are `/inbox`, `/status`, `/approve N`, `/reject N`, and `/merge N`.
-Commands are accepted only from usernames in `telegram-moderators.json`; tokens
-are never stored in Git.
+Every PR message includes buttons for `Open PR`, `Approve review`, `Reject`,
+`Merge`, and `Refresh`. Text commands remain available: `/inbox`, `/status`,
+`/approve N`, `/reject N`, and `/merge N`. The bot checks the allowlist for both
+buttons and text commands; tokens are never stored in Git.
 
 Review the plugin source, manifest, archive contents, release provenance,
 license, dependencies, requested permissions, and AngelOS compatibility in
