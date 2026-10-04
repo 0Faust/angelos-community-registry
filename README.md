@@ -117,6 +117,19 @@ Every PR message includes buttons for `Open PR`, `Approve review`, `Reject`,
 `/approve N`, `/reject N`, and `/merge N`. The bot checks the allowlist for both
 buttons and text commands; tokens are never stored in Git.
 
+## Desktop GUI
+
+Install the local moderation application from a registry checkout:
+
+```fish
+fish install-registry-gui.fish
+```
+
+It appears in the application menu as `AngelOS Community Registry` and can also
+be launched with `community-registry-gui`. The app uses the current `gh` login,
+shows open PRs with search and plugin metadata, and provides confirmed
+`Approve review`, `Reject`, `Merge`, `Open PR`, and `Refresh` actions.
+
 Review the plugin source, manifest, archive contents, release provenance,
 license, dependencies, requested permissions, and AngelOS compatibility in
 the pull request. Test the ZIP with Community Store when possible. Merge only
