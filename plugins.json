@@ -194,9 +194,9 @@
       "id": "dog-walk",
       "name": "Dog Walk",
       "author": "futureUnd1ground",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "description": "A pixel dog that walks across the AngelOS desktop widget.",
-      "source": "https://github.com/futureUnd1ground/dog-walk/releases/download/v1.1.0/dog-walk-v1.1.0.zip",
+      "source": "https://github.com/futureUnd1ground/dog-walk/releases/download/v1.1.1/dog-walk-v1.1.1.zip",
       "repository": "https://github.com/futureUnd1ground/dog-walk",
       "tags": [
         "desktop",
