@@ -1,6 +1,6 @@
 # AngelOS Community Registry
 
-[English](README.md) | [Русский](README.ru.md)
+[English version](README.md) | Русская версия
 
 Community Store загружает `plugins.json` из этого репозитория. Пользователям
 показываются только записи со статусом `approved`. Новые заявки должны иметь
