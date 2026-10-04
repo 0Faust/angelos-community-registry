@@ -15,6 +15,18 @@ REPO = "futureUnd1ground/angelos-community-registry"
 MODERATORS_URL = "https://raw.githubusercontent.com/{}/main/moderators.json".format(REPO)
 
 
+def system_theme():
+    """Read the desktop color preference without adding GUI dependencies."""
+    try:
+        result = subprocess.run(["gsettings", "get", "org.gnome.desktop.interface", "color-scheme"],
+                                capture_output=True, text=True, timeout=2)
+        if "dark" in result.stdout.casefold():
+            return "dark"
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return "light"
+
+
 def gh(args):
     result = subprocess.run(["gh", "api"] + args, capture_output=True, text=True)
     if result.returncode:
@@ -95,6 +107,19 @@ class RegistryApp(tk.Tk):
             style.theme_use("clam")
         except tk.TclError:
             pass
+        if system_theme() == "dark":
+            palette = {"bg": "#202124", "panel": "#292a2d", "fg": "#f1f3f4", "muted": "#bdc1c6",
+                       "select": "#3c5a78", "border": "#5f6368"}
+        else:
+            palette = {"bg": "#f5f7fa", "panel": "#ffffff", "fg": "#202124", "muted": "#5f6368",
+                       "select": "#d9eaf7", "border": "#c5cbd3"}
+        self.configure(background=palette["bg"])
+        style.configure("TFrame", background=palette["bg"])
+        style.configure("TLabel", background=palette["bg"], foreground=palette["fg"])
+        style.configure("TButton", padding=(10, 6))
+        style.configure("Treeview", background=palette["panel"], fieldbackground=palette["panel"], foreground=palette["fg"], rowheight=30)
+        style.map("Treeview", background=[("selected", palette["select"])], foreground=[("selected", palette["fg"])])
+        style.configure("Treeview.Heading", background=palette["bg"], foreground=palette["fg"])
         header = ttk.Frame(self, padding=(16, 14))
         header.pack(fill="x")
         ttk.Label(header, text="COMMUNITY REGISTRY", font=("Sans", 18, "bold")).pack(side="left")
@@ -128,7 +153,7 @@ class RegistryApp(tk.Tk):
         self.tree.bind("<<TreeviewSelect>>", lambda _event: self.show_details())
 
         ttk.Label(right, text="Детали заявки", font=("Sans", 14, "bold")).pack(anchor="w")
-        self.details = tk.Text(right, wrap="word", height=20, state="disabled", background="#f4f4f4", relief="flat")
+        self.details = tk.Text(right, wrap="word", height=20, state="disabled", background=palette["panel"], foreground=palette["fg"], insertbackground=palette["fg"], relief="flat")
         self.details.pack(fill="both", expand=True, pady=(10, 12))
         actions = ttk.Frame(right)
         actions.pack(fill="x")

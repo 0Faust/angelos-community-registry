@@ -5,8 +5,10 @@ set -l source_dir (dirname (status --current-filename))
 set -l app_dir $HOME/.local/share/angelos-community-registry-moderator
 set -l bin_dir $HOME/.local/bin
 set -l moderator_source $source_dir/scripts/community-registry-moderator.py
+set -l gui_source $source_dir/scripts/community-registry-gui.py
 set -l gh_source /tmp/gh-cli-2.102.0/gh_2.102.0_linux_amd64/bin/gh
 set -l downloaded_source ""
+set -l downloaded_gui ""
 
 printf '\n%s\n' \
     '████████████████████████████████████████████████████████████████████████' \
@@ -50,6 +52,37 @@ or begin
 end
 test -n "$downloaded_source"; and rm -f -- $downloaded_source
 
+if not test -f $gui_source
+    set gui_source https://raw.githubusercontent.com/futureUnd1ground/angelos-community-registry/main/scripts/community-registry-gui.py
+    set downloaded_gui (mktemp)
+    or begin
+        echo "Could not create a temporary GUI download file." >&2
+        exit 1
+    end
+    curl -fsSL $gui_source -o $downloaded_gui
+    or begin
+        rm -f -- $downloaded_gui
+        echo "Could not download the moderator GUI from GitHub." >&2
+        exit 1
+    end
+    set gui_source $downloaded_gui
+end
+
+set -l gui_dir $HOME/.local/share/angelos-community-registry
+set -l desktop_dir $HOME/.local/share/applications
+mkdir -p $gui_dir $desktop_dir
+cp $gui_source $gui_dir/community-registry-gui.py
+or begin
+    test -n "$downloaded_gui"; and rm -f -- $downloaded_gui
+    echo "Could not install the moderator GUI." >&2
+    exit 1
+end
+test -n "$downloaded_gui"; and rm -f -- $downloaded_gui
+chmod 755 $gui_dir/community-registry-gui.py
+printf '%s\n' '#!/bin/sh' 'exec python3 "$HOME/.local/share/angelos-community-registry/community-registry-gui.py" "$@"' > $bin_dir/community-registry-gui
+chmod 755 $bin_dir/community-registry-gui
+printf '%s\n' '[Desktop Entry]' 'Type=Application' 'Name=AngelOS Community Registry' 'Comment=Moderate community plugin submissions' "Exec=$HOME/.local/bin/community-registry-gui" 'Icon=system-software-install' 'Terminal=false' 'Categories=System;Settings;' > $desktop_dir/angelos-community-registry.desktop
+
 if not command -q gh; and test -x $gh_source; and not test -e $bin_dir/gh
     cp $gh_source $bin_dir/gh
     or begin
@@ -71,6 +104,7 @@ if command -q fish_add_path
 end
 
 echo "Installed command: community-registry-moderator"
+echo "Installed GUI: community-registry-gui"
 if not command -q gh
     echo "GitHub CLI is missing. Install it, then run: gh auth login" >&2
 else if gh auth status >/dev/null 2>&1
