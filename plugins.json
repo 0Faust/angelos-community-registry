@@ -211,6 +211,28 @@
         "local plugin settings"
       ],
       "status": "approved"
+    },
+    {
+      "id": "realm-toggle",
+      "name": "Realm Toggle",
+      "author": "0Faust",
+      "version": "1.0.0",
+      "description": "One-click bar button that toggles heaven and hell in angelOS with the full swap animation. Requires an AngelOS build with the Angel realm service.",
+      "source": "https://github.com/0Faust/realm-toggle/releases/download/v1.0.0/realm-toggle-v1.0.0.zip",
+      "repository": "https://github.com/0Faust/realm-toggle",
+      "tags": [
+        "bar",
+        "widget",
+        "theme"
+      ],
+      "category": "Widgets",
+      "license": "MIT",
+      "dependencies": [],
+      "permissions": [
+        "runs 'qs -c angelos -n ipc call helper portal' from the context menu",
+        "local plugin settings"
+      ],
+      "status": "pending"
     }
   ]
 }
