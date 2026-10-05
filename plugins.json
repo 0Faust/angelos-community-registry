@@ -211,6 +211,28 @@
         "local plugin settings"
       ],
       "status": "approved"
+    },
+    {
+      "id": "battery-meter",
+      "name": "Battery Meter",
+      "author": "0Faust",
+      "version": "1.0.0",
+      "description": "Battery charge, charging status, time estimate and low-battery warnings on the bar and desktop, in angelOS pixel style.",
+      "source": "https://github.com/0Faust/battery-meter/releases/download/v1.0.0/battery-meter-v1.0.0.zip",
+      "repository": "https://github.com/0Faust/battery-meter",
+      "tags": [
+        "battery",
+        "bar",
+        "widget"
+      ],
+      "category": "Utilities",
+      "license": "MIT",
+      "dependencies": [],
+      "permissions": [
+        "read battery status from /sys/class/power_supply",
+        "local plugin settings"
+      ],
+      "status": "pending"
     }
   ]
 }
