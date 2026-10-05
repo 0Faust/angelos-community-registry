@@ -232,7 +232,7 @@
         "read battery status from /sys/class/power_supply",
         "local plugin settings"
       ],
-      "status": "pending"
+      "status": "approved"
     }
   ]
 }
