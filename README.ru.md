@@ -67,14 +67,22 @@ username находится в [`telegram-moderators.json`](telegram-moderators.
 сейчас там `@futureoffc` и `@psxgld`.
 
 1. Создайте бота через `@BotFather` и получите токен.
-2. Скопируйте `telegram-bot.env.example` в защищённый файл и заполните
-   `TELEGRAM_BOT_TOKEN` и `GITHUB_TOKEN`.
-3. Запустите из корня registry:
+2. Установите пользовательскую службу:
+
+```fish
+fish install-telegram-bot.fish
+```
+
+3. Заполните токены в `~/.config/angelos-community-registry/telegram-bot.env`.
+4. Включите службу:
 
 ```bash
-set -a; source ./telegram-bot.env; set +a
-python3 scripts/community-registry-telegram-bot.py
+systemctl --user enable --now angelos-community-registry-telegram-bot.service
 ```
+
+Проверить состояние и журнал можно командами `systemctl --user status
+angelos-community-registry-telegram-bot` и `journalctl --user -u
+angelos-community-registry-telegram-bot -f`.
 
 Модератор должен один раз открыть бота и отправить `/start`; после этого чат
 получит уведомления о новых PR. Под каждой заявкой есть кнопки `Открыть PR`,
@@ -82,6 +90,16 @@ python3 scripts/community-registry-telegram-bot.py
 доступны: `/inbox`, `/status`, `/approve N`, `/reject N`, `/merge N`. Бот
 повторно проверяет username и для кнопок, и для команд; токены в Git не
 добавляются.
+
+Перед merge бот проверяет архивы добавленных или обновлённых плагинов и их
+manifest; после успешного merge он помечает изменённые листинги как `approved`,
+чтобы они появились в Store. PR без изменённых записей плагинов нельзя слить через бота. Для
+действий нужен `GITHUB_TOKEN` с правами `Contents: write`, `Pull requests: write`
+и `Issues: write` для комментария при отклонении и публикации статуса approved.
+Команда `/stop` отключает уведомления. После обновления отправь `/start` снова:
+старые подписки без сохранённого username сбрасываются.
+
+Кнопки и команды работают только в личном чате с ботом.
 
 ## Отдельное GUI-приложение
 

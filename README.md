@@ -102,20 +102,39 @@ source, repository, and license. Telegram usernames are stored in
 `@futureoffc` and `@psxgld`.
 
 1. Create a bot with `@BotFather` and copy its token.
-2. Copy `telegram-bot.env.example` to a protected file and set
-   `TELEGRAM_BOT_TOKEN` and `GITHUB_TOKEN`.
-3. Start from the registry root:
+2. Install the user service:
+
+```fish
+fish install-telegram-bot.fish
+```
+
+3. Fill the tokens in `~/.config/angelos-community-registry/telegram-bot.env`.
+4. Enable the service:
 
 ```bash
-set -a; source ./telegram-bot.env; set +a
-python3 scripts/community-registry-telegram-bot.py
+systemctl --user enable --now angelos-community-registry-telegram-bot.service
 ```
+
+Inspect it with `systemctl --user status angelos-community-registry-telegram-bot`
+or follow logs with `journalctl --user -u angelos-community-registry-telegram-bot -f`.
 
 A moderator must open the bot and send `/start` once to subscribe the chat.
 Every PR message includes buttons for `Open PR`, `Approve review`, `Reject`,
 `Merge`, and `Refresh`. Text commands remain available: `/inbox`, `/status`,
 `/approve N`, `/reject N`, and `/merge N`. The bot checks the allowlist for both
 buttons and text commands; tokens are never stored in Git.
+
+The bot compares each PR's `plugins.json` with `main`, reports only added,
+updated, or removed entries, and validates changed plugin archives and manifests
+before merging. A PR without a changed plugin entry cannot be merged through the
+bot. After a validated merge, changed plugin listings are marked `approved` so
+they appear in the Store. Set `GITHUB_TOKEN` with `Contents: write`,
+`Pull requests: write`, and `Issues: write` for rejection comments and listing
+approval. `/stop` disables notifications. After upgrading, subscribed
+moderators should send `/start` again because old chat IDs without a saved
+username are discarded.
+
+Commands and action buttons work only in a private chat with the bot.
 
 ## Desktop GUI
 
