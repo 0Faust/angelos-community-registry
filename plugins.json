@@ -375,7 +375,7 @@
         "Store endpoint-specific API keys in a private local credential file",
         "Download an official verified Ollama runtime and user-selected model weights on explicit request"
       ],
-      "status": "pending",
+      "status": "approved",
       "license": "MIT",
       "icon": "bot"
     }
