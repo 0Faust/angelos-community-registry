@@ -25,7 +25,7 @@
         "HTTPS access to plugin registry and releases",
         "GitHub repository, release and pull-request writes when publishing"
       ],
-      "status": "pending",
+      "status": "approved",
       "icon": "package"
     },
     {
