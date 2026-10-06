@@ -329,7 +329,7 @@
       "permissions": [
         "HTTPS access to the configured community registry"
       ],
-      "status": "pending",
+      "status": "approved",
       "license": "MIT",
       "icon": "search"
     }
