@@ -376,7 +376,7 @@
         "Download an official verified Ollama runtime and user-selected model weights on explicit request",
         "Optional private local conversation memory, sent back only to the selected model endpoint"
       ],
-      "status": "pending",
+      "status": "approved",
       "license": "MIT",
       "icon": "bot"
     }
